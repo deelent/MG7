@@ -25,8 +25,10 @@ public class Bird : MonoBehaviour
     //      coded! :)
     private void OnEnable()
     {
-        
+        _doPopUpAnimation = true;
+        _popUpTimeRemaining = _popUpTime;
     }
+
     // STEP 2 -----------------------------------------------------------------
 
     private void Update()
@@ -34,7 +36,19 @@ public class Bird : MonoBehaviour
         // STEP 3 -------------------------------------------------------------
         // Update your timer, and if the bird should still be animating,
         //      move it upwards with Translate.
+        if (_doPopUpAnimation)
+        {
+            _popUpTimeRemaining -= Time.deltaTime;
 
+            transform.Translate(
+                Vector3.up * _popUpSpeed * Time.deltaTime
+            );
+
+            if (_popUpTimeRemaining <= 0)
+            {
+                _doPopUpAnimation = false;
+            }
+        }
 
         // STEP 3 -------------------------------------------------------------
 
@@ -46,7 +60,10 @@ public class Bird : MonoBehaviour
         // If the player is holding a seed, make the bird look at the player
         //      with the Transform.LookAt() method:
         //      https://docs.unity3d.com/6000.2/Documentation/ScriptReference/Transform.LookAt.html
-        
+        if (_player._isHoldingSeed)
+        {
+            transform.LookAt(_player.transform);
+        }
 
 
         // STEP 6 -------------------------------------------------------------
